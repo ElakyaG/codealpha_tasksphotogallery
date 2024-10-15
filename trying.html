@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE UNIVERSE</title>
+    <style>
+                body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background: #111;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+                .menu-dots {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+        .menu-content {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 45px;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 8px;
+        }
+        .menu-content button {
+            background: none;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1em;
+            color: #333;
+        }
+        .menu-content button:hover {
+            background-color: #f0f0f0;
+        }
+        .album {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .album-thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .album-thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .album-thumbnail img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+        }
+        .album-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            font-size: 1.2em;
+        }
+        .gallery {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .thumbnail img {
+            width: 100%;
+            border-radius: 10px;
+            display: block; 
+        }
+        .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            font-size: 1.1em;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #ffffff;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .close:hover {
+            color: #ff0000; 
+        }
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+        .arrow-left {
+            left: 20px;
+        }
+        .arrow-right {
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>ft.UNIVERSE</h1>
+    <div class="menu-dots" onclick="toggleMenu()">&#x22EE;</div>
+    <div class="menu-content" id="menuContent">
+        <button onclick="promptAction('delete')">Delete</button>
+        <button onclick="promptAction('edit')">Edit</button>
+        <button onclick="showRestoreModal()">Restore</button>
+    </div>
+</header>
+
+
+<div class="upload-form">
+    <input type="file" id="imageUpload" accept="image/*">
+    <input type="text" id="imageCaption" placeholder="Image Caption">
+    <button onclick="uploadImage()">Upload Image</button>
+</div>
+<div class="album">
+    <div class="album-thumbnail" onclick="showGallery('galaxy')">
+        <img src="galaxy.jpg" alt="Galaxy Album">
+        <div class="album-caption">Galaxy</div>
+    </div>
+    <div class="album-thumbnail" onclick="showGallery('nebula')">
+        <img src="nebula.jpg" alt="Nebula Album">
+        <div class="album-caption">Nebula</div>
+    </div>
+    <div class="album-thumbnail" onclick="showGallery('supernova')">
+        <img src="supernova.jpg" alt="Supernova Album">
+        <div class="album-caption">Supernova</div>
+    </div>
+    <div class="album-thumbnail" onclick="showGallery('blackhole')">
+        <img src="blackhole.jpg" alt="Black Hole Album">
+        <div class="album-caption">Black Hole</div>
+    </div>
+    <div class="album-thumbnail" onclick="showGallery('starcluster')">
+        <img src="starcluster.jpg" alt="Star Cluster Album">
+        <div class="album-caption">Star Cluster</div>
+    </div>
+</div>
+
+
+<div id="galaxy" class="gallery"></div>
+<div id="nebula" class="gallery"></div>
+<div id="supernova" class="gallery"></div>
+<div id="blackhole" class="gallery"></div>
+<div id="starcluster" class="gallery"></div>
+<div id="modal" class="modal" onclick="closeModal(event)">
+    <span class="close" onclick="closeModal(event)">&times;</span>
+    <span class="arrow arrow-left" onclick="showPreviousImage(event)">&lt;</span>
+    <span class="arrow arrow-right" onclick="showNextImage(event)">&gt;</span>
+    <img id="modal-image" alt="Full Size Image">
+</div>
+
+
+<div id="restoreModal" class="modal">
+    <div class="modal-content">
+        <h2>Recently Deleted</h2>
+        <div id="deletedImagesContainer"></div>
+        <div id="restoreButtons">
+            <button onclick="restoreSelectedImage()">Restore</button>
+            <button onclick="closeRestoreModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+<div id="selectImageModal" class="modal" onclick="closeSelectImageModal(event)">
+    <div class="modal-content">
+        <h2>Select an Image</h2>
+        <div id="imageSelectionContainer"></div>
+        <button onclick="closeSelectImageModal()">Cancel</button>
+    </div>
+</div>
+
+
+<script>
+    const albums = {
+        galaxy: [
+            { src: 'galaxy1.jpg', caption: 'Image 1' },
+            { src: 'galaxy2.jpg', caption: 'Image 2' },
+            { src: 'galaxy3.jpg', caption: 'Image 3' }
+        ],
+        nebula: [
+            { src: 'nebula1.jpg', caption: 'Image 4' },
+            { src: 'nebula2.jpg', caption: 'Image 5 ' },
+            { src: 'nebula3.jpg', caption: 'Image 6 ' }
+        ],
+        supernova: [
+            { src: 'supernova1.jpg', caption: 'Image 7' },
+            { src: 'supernova2.jpg', caption: 'Image 8 ' },
+            { src: 'supernova3.jpg', caption: 'Image 9 ' }
+        ],
+        blackhole: [
+            { src: 'blackhole1.jpg', caption: 'Image 10 ' },
+            { src: 'blackhole2.jpg', caption: 'Image 11 ' },
+            { src: 'blackhole3.jpg', caption: 'Image 12 ' }
+        ],
+        starcluster: [
+            { src: 'starcluster1.jpg', caption: 'Image 13 ' },
+            { src: 'starcluster2.jpg', caption: 'Image 14 ' },
+            { src: 'starcluster3.jpg', caption: 'Image 15 ' }
+        ]
+    };
+    
+    let recentlyDeleted = [];
+    let currentIndex = -1; 
+    let currentAlbum = ''; 
+    
+    function showGallery(album) {
+        document.querySelectorAll('.gallery').forEach(gallery => {
+            gallery.style.display = 'none';
+        });
+        const galleryElement = document.getElementById(album);
+        galleryElement.style.display = 'grid';
+        galleryElement.innerHTML = ''; 
+        albums[album].forEach((image, index) => {
+            galleryElement.innerHTML += `
+                <div class="thumbnail" onclick="openModal(${index}, '${album}')">
+                    <img src="${image.src}" alt="${image.caption}">
+                    <div class="caption">${image.caption}</div>
+                </div>
+            `;
+        });
+    }
+
+     function openModal(index, album) {
+        currentIndex = index;
+        currentAlbum = album;
+        const modalImage = document.getElementById('modal-image');
+        modalImage.src = albums[album][index].src;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal(event) {
+        if (event.target === event.currentTarget) {
+            document.getElementById('modal').style.display = 'none';
+        }
+    }
+
+    function showNextImage(event) {
+        event.stopPropagation();
+        if (currentIndex < albums[currentAlbum].length - 1) {
+            currentIndex++;
+            updateModalImage();
+        }
+    }
+
+    function showPreviousImage(event) {
+        event.stopPropagation();
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateModalImage();
+        }
+    }
+
+    function updateModalImage() {
+        const modalImage = document.getElementById('modal-image');
+        modalImage.src = albums[currentAlbum][currentIndex].src;
+    }
+
+    function uploadImage() {
+        const fileInput = document.getElementById('imageUpload');
+        const captionInput = document.getElementById('imageCaption');
+        if (fileInput.files.length > 0 && captionInput.value.trim() !== "") {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const newImage = {
+                    src: e.target.result,
+                    caption: captionInput.value
+                };
+                albums['galaxy'].push(newImage);
+                fileInput.value = '';
+                captionInput.value = '';
+                showGallery('galaxy');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Please select an image and provide a caption.");
+        }
+        
+    }
+    
+    function toggleMenu() {
+        const menuContent = document.getElementById('menuContent');
+        menuContent.style.display = menuContent.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function promptAction(type) {
+        actionType = type;
+        let choice = prompt(`Choose what to ${type}: "image" or "album"`);
+        if (choice === 'image') {
+            selectImage(type);
+        } else if (choice === 'album') {
+            selectAlbum(type);
+        }
+    }
+
+    function selectImage(action) {
+        let albumName = prompt("Enter the album name containing the image:");
+        if (albums[albumName]) {
+            showImageSelection(albumName, action);
+        } else {
+            alert("Album not found.");
+        }
+    }
+
+    function showImageSelection(albumName, action) {
+        const imageSelectionContainer = document.getElementById('imageSelectionContainer');
+        imageSelectionContainer.innerHTML = '';
+        albums[albumName].forEach((image, index) => {
+            imageSelectionContainer.innerHTML += `
+                <div class="thumbnail" onclick="confirmImageSelection(${index}, '${albumName}', '${action}')">
+                    <img src="${image.src}" alt="${image.caption}">
+                    <div class="caption">${image.caption}</div>
+                </div>
+            `;
+        });
+        document.getElementById('selectImageModal').style.display = 'flex';
+    }
+
+    function confirmImageSelection(index, album, action) {
+        if (action === 'delete') {
+            deleteImage(index, album);
+        } else if (action === 'edit') {
+            editImage(index, album);
+        }
+        closeSelectImageModal();
+    }
+
+    function closeSelectImageModal(event) {
+        if (event && event.target === event.currentTarget) {
+            document.getElementById('selectImageModal').style.display = 'none';
+        } else {
+            document.getElementById('selectImageModal').style.display = 'none';
+        }
+    }
+
+    function deleteImage(index, album) {
+        recentlyDeleted.push(albums[album][index]);
+        albums[album].splice(index, 1);
+        alert("Image deleted.");
+    }
+
+    function deleteAlbum(album) {
+        recentlyDeleted.push(...albums[album]);
+        delete albums[album];
+        alert("Album deleted.");
+    }
+
+    function editImage(index, album) {
+        let newCaption = prompt("Enter new caption for the image:");
+        albums[album][index].caption = newCaption;
+        alert("Image edited.");
+    }
+
+    function editAlbum(album) {
+        let newName = prompt("Enter new name for the album:");
+        albums[newName] = albums[album];
+        delete albums[album];
+        alert("Album renamed.");
+    }
+
+    function showRestoreModal() {
+        const deletedContainer = document.getElementById('deletedImagesContainer');
+        deletedContainer.innerHTML = '';
+        if (recentlyDeleted.length > 0) {
+            recentlyDeleted.forEach((image, index) => {
+                deletedContainer.innerHTML += `
+                    <div>
+                        <input type="radio" name="deletedImage" value="${index}">
+                        <img src="${image.src}" alt="${image.caption}">
+                        <span>${image.caption}</span>
+                    </div>
+                `;
+            });
+        } else {
+            deletedContainer.innerHTML = '<p>No recently deleted images.</p>';
+        }
+        document.getElementById('restoreModal').style.display = 'flex';
+    }
+
+    function restoreSelectedImage() {
+        let selectedIndex = document.querySelector('input[name="deletedImage"]:checked');
+        if (selectedIndex) {
+            let restoredImage = recentlyDeleted.splice(selectedIndex.value, 1)[0];
+            albums['galaxy'].push(restoredImage);  // For demonstration, add to Galaxy album.
+            alert("Image restored.");
+            closeRestoreModal();
+        } else {
+            alert("No image selected.");
+        }
+    }
+
+    function closeRestoreModal() {
+        document.getElementById('restoreModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
